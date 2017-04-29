@@ -1,25 +1,18 @@
 {
   "name": "hackpad",
-  "version": "0.0.3",
-  "engines": {
-    "node": ">= 0.6.9"
-  },
-  "description": "A client library for the Hackpad API",
-  "directories": {
-    "lib": "./lib"
-  },
-  "dependencies": {
-    "oauth-client": "~0.3.0",
-    "underscore": "~1.4.4"
-  },
-  "main": "./lib/hackpad",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "version": "0.1.0",
+  "description": "A client library for the Hackpad API and CLI",
+  "keywords": [
+    "hackpad"
+  ],
+  "homepage": "https://github.com/chbrown/hackpad-node",
   "repository": {
     "type": "git",
-    "url": "git://github.com/lkosak/node-hackpad.git"
+    "url": "https://github.com/chbrown/hackpad-node.git"
   },
-  "author": "Lou Kosak <lkosak@gmail.com>",
-  "license": "BSD"
+  "author": "Christopher Brown <io@henrian.com> (http://henrian.com)",
+  "license": "MIT",
+  "dependencies": {
+    "oauth-client": "0.3.0"
+  }
 }
