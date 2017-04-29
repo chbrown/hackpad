@@ -11,7 +11,12 @@ class Hackpad {
     this.host = options.host;
   }
   static loadFromEnvironment() {
-    return new Hackpad(process.env.HACKPAD_CLIENT_ID, process.env.HACKPAD_SECRET);
+    const key = process.env.HACKPAD_CLIENT_ID || process.env.HACKPAD_KEY;
+    const secret = process.env.HACKPAD_SECRET;
+    if (!(key && secret)) {
+      throw new Error('Could not load Hackpad Client ID / Secret from environment');
+    }
+    return new Hackpad(key, secret);
   }
 
   request(method, path, headers, body, callback) {
