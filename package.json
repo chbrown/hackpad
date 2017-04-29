@@ -5,14 +5,19 @@
   "keywords": [
     "hackpad"
   ],
-  "homepage": "https://github.com/chbrown/hackpad-node",
+  "homepage": "https://github.com/chbrown/hackpad",
   "repository": {
     "type": "git",
-    "url": "https://github.com/chbrown/hackpad-node.git"
+    "url": "https://github.com/chbrown/hackpad.git"
   },
   "author": "Christopher Brown <io@henrian.com> (http://henrian.com)",
   "license": "MIT",
   "dependencies": {
     "oauth-client": "0.3.0"
+  },
+  "bin": {
+    "hackpad-list": "bin/list.js",
+    "hackpad-export": "bin/export.js",
+    "hackpad-revisions": "bin/revisions.js"
   }
 }
