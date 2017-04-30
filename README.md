@@ -1,137 +1,131 @@
-# Overview
+# Hackpad API client
 
-A client library for the Hackpad API (Version 1.0)
-
-Make sure to check out the official [Hackpad API documentation](https://hackpad.com/Hackpad-API-v1.0-k9bpcEeOo2Q).
+Node.js client library for the Hackpad API, version 1.0.
 
 
-# Installation
+## Installation & Usage
 
-Clone from here, or install with npm:
+Install with npm:
 
     npm install chbrown/hackpad
 
-Include in your app:
+Require in your app:
 
-    const {Hackpad} = require('hackpad');
+```javascript
+const {Hackpad} = require('hackpad');
+```
 
-
-# Usage
-
-Instantiate the client with your Hackpad Oauth client ID and secret.
+Instantiate the client with your Hackpad Oauth Client ID and secret.
 You can find these on the [account/settings](https://hackpad.com/ep/account/settings/) page.
 
-    const client = new Hackpad(client_id, secret, [options]);
+```javascript
+const client = new Hackpad(client_id, secret);
+```
 
-Then, just run commands on your fancy new client:
+If you have a custom Hackpad site, you can provide this via an optional argument:
 
-    client.create("This is an awesome hackpad");
+```javascript
+const client = new Hackpad(client_id, secret, 'mycompany.hackpad.com');
+```
 
-All methods accept a callback function in the usual format:
+Then, just run commands on your fancy new client instance:
 
-    client.create("I like this hackpad even more", (err, result) => {
-      if (err) throw err;
-      // do something...
-    });
+```javascript
+client.create('This is an awesome hackpad');
+```
 
-JSON responses are parsed automatically for you, so this would work:
+All methods take a callback function, and JSON responses are parsed automatically:
 
-    client.create("I should stop creating new hackpads", (err, resp) => {
-      console.log(resp.padId);
-    });
+```javascript
+client.create('I like this hackpad even more', (err, result) => {
+  if (err) throw err;
+  console.log('Created pad with ID=' + result.padId);
+});
+```
 
-For non-JSON responses (just `export` at this point), the raw body is returned.
-
-
-## Options
-
-An optional options dictionary can be passed to the client.
-
-`site` custom site (e.g., "mycompany" if your Hackpad site is mycompany.hackpad.com)
-
-
-## Methods
-
-This client supports all the API endpoints described in the [Hackpad API documentation](https://hackpad.com/Hackpad-API-v1.0-k9bpcEeOo2Q). Details:
+For non-JSON responses (like `export`), the raw body is returned.
 
 
-### create
+## Client methods
 
-    client.create(body, format, [callback])
+See the official [API documentation](https://hackpad.com/ep/pad/summary/k9bpcEeOo2Q?show=40) for details.
 
-`body` a string of body text
+### Data access (GET) calls
 
-`format` 'text/html', 'text/x-web-markdown', 'text/plain' (default 'text/html')
+```javascript
+client.list(callback)
+```
 
-### import
+```javascript
+client.search(query, callback)
+```
 
-    client.import(padId, body, format, [callback])
+* `query` is an option with the keys:
+  - `q` Search term (required)
+  - `start` Offset to start from
+  - `limit` How many results to return
 
-`padId` ID of an existing (or not-existing) pad
 
-`body` a string of body text
+```javascript
+client.create(body, contentType, callback)
+```
 
-`format` 'text/html', 'text/x-web-markdown', 'text/plain' (default: 'text/html')
+* `body` a string of body text
+* `contentType` One of `text/html`, `text/x-web-markdown`, or `text/plain`
 
-### revert
+```javascript
+client.import(padId, body, contentType, callback)
+```
 
-    client.revert(padId, revisionId, [callback])
+* `padId` ID of an existing (or not-existing) pad
+* `body` a string of body text
+* `contentType` One of `text/html`, `text/x-web-markdown`, or `text/plain`
 
-### export
+```javascript
+client.revert(padId, revisionId, callback)
+```
 
-    client.export(padId, format, [callback])
+```javascript
+client.export(padId, revisionId, format, callback)
+```
 
-`padId` ID of an existing pad
+* `padId` ID of an existing pad
+* `revisionId` The revision to export; either a numeric ID or the string `latest`
+* `format` One of `html`, `md`, `txt`, or `native`
+  - `html` is recommended since `md` and `txt` are derived from HTML
+  - `native` just adds a lot of Ace editor markup to the HTML
 
-`format` 'html', 'md', 'txt' (default: 'html')
+```javascript
+client.editedSince(timestamp, callback)
+```
 
-### editedSince
+* `padId` ID of an existing pad
+* `timestamp` A Date object
 
-    client.editedSince(timestamp, [callback])
+```javascript
+client.revisions(padId, callback)
+```
 
-`padId` ID of an existing pad
+* `padId` ID of an existing pad
 
-`timestamp` Accepts either a unix timestamp (int) or a Date object
+```javascript
+client.revokeAccess(email, callback)
+```
 
-### revisions
+* `email` Email address of the user to revoke access for
 
-    client.revisions(padId, [callback])
+```javascript
+client.removeUser(email, callback)
+```
 
-`padId` ID of an existing pad
+* `email` Email address of the user to remove
 
-### revokeAccess
+```javascript
+client.setEmailEnabled(email, setting, callback)
+```
 
-    client.revokeAccess(email, [callback])
-
-`email` Email address of the user to revoke access for
-
-### removeUser
-
-    client.removeUser(email, [callback])
-
-`email` Email address of the user to remove
-
-### setEmailEnabled
-
-    client.setEmailEnabled(email, setting, [callback])
-
-`email` Email address of the user to update
-
-`setting` true or false
-
-### search
-
-    client.search(term, [start], [limit], [callback])
-
-`terms` Search terms
-
-`start` Offset to start from
-
-`limit` How many results to return
-
-### list
-
-    client.list([callback])
+* `email` Email address of the user to update
+* `setting` `true` or `false` (as strings)
 
 
 ## License
