@@ -32,7 +32,7 @@ class Hackpad {
       }, headers),
     };
 
-    // console.error('Request map', request);
+    // console.error('Request map:', request);
     const req = oauth.request(request, (res) => {
       const chunks = [];
       res.on('data', (chunk) => {
@@ -40,7 +40,8 @@ class Hackpad {
         chunks.push(chunk);
       });
       res.on('end', () => {
-        // console.error('Response headers', res.headers);
+        // console.error('Response status:', res.statusCode, res.statusMessage);
+        // console.error('Response headers:', res.headers);
         const body = Buffer.concat(chunks);
         if (res.headers['content-type'].includes('application/json')) {
           const data = JSON.parse(body);
