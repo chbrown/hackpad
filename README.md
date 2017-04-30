@@ -3,6 +3,62 @@
 Node.js client library for the Hackpad API, version 1.0.
 
 
+## Archival
+
+On April 25, 2017, Hackpad announced they are shutting down.
+
+> I’m writing to let you know we’ll be shutting down Hackpad on July 19.
+> [...]
+> Igor Kofman, Hackpad founder and Dropbox Paper lead
+
+They provide automated archives of pads you've created, but not all pads you have access to.
+
+Here's how to back up all your Hackpad documents:
+
+**First**, install this package: `npm install -g chbrown/hackpad`
+
+**Second**, create a new directory and download this [`Makefile`](docs/Makefile) into it:
+
+```make
+IDS := $(shell cat *-ids.txt)
+
+all: $(IDS:%=html/%.html) $(IDS:%=revisions/%.json)
+
+personal-ids.txt:
+  hackpad-list > $@
+
+html/%.html:
+  @mkdir -p $(@D)
+  hackpad-export $* > $@
+
+revisions/%.json:
+  @mkdir -p $(@D)
+  hackpad-revisions $* > $@
+```
+
+**Third**, go to <https://hackpad.com/ep/account/settings/> and copy down your Client ID and Secret like so:
+
+```sh
+export HACKPAD_CLIENT_ID=k8EXAMPLE1d
+export HACKPAD_SECRET=4mEXAMPLEtj45gTlBW31mlFnEXAMPLE9
+```
+
+**Fourth**, run `make personal-ids.txt`, which will list your the IDs of your personal Hackpads (the Hackpads you've created):
+
+**Fifth**, create a file `other-ids.txt`, and add other Hackpad IDs that you have access to and want to archive.
+
+For example, on a "collection" page, run the following in your browser's console:
+
+```javascript
+[...document.querySelectorAll('#list-of-pads-div a')].map(a =>
+  a.href.match(/\/(\w{11})/)).filter(m => m).map(m => m[1]).join('\n')
+```
+
+Copy and paste this string into the `other-ids.txt` file.
+
+**Finally**, run `make` in the directory. This reads all the files matching `*-ids.txt` in your current directory, and uses the `hackpad-export` and `hackpad-revisions` scripts provided by this package to download html exports into an `html/` directory, and the JSON revisions into a `revisions/` directory (it will create these directories as needed).
+
+
 ## Installation & Usage
 
 Install with npm:
