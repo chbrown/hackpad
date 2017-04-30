@@ -25,15 +25,15 @@ IDS := $(shell cat *-ids.txt)
 all: $(IDS:%=html/%.html) $(IDS:%=revisions/%.json)
 
 personal-ids.txt:
-  hackpad-list > $@
+	hackpad-list > $@
 
 html/%.html:
-  @mkdir -p $(@D)
-  hackpad-export $* > $@
+	@mkdir -p $(@D)
+	hackpad-export $* > $@
 
 revisions/%.json:
-  @mkdir -p $(@D)
-  hackpad-revisions $* > $@
+	@mkdir -p $(@D)
+	hackpad-revisions $* > $@
 ```
 
 **Third**, go to <https://hackpad.com/ep/account/settings/> and copy down your Client ID and Secret like so:
@@ -63,7 +63,9 @@ Copy and paste this string into the `other-ids.txt` file.
 
 Install with npm:
 
-    npm install chbrown/hackpad
+```sh
+npm install chbrown/hackpad
+```
 
 Require in your app:
 
