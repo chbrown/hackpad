@@ -5,10 +5,10 @@ const GET = 'GET';
 const POST = 'POST';
 
 class Hackpad {
-  constructor(key, secret, options = {host: 'hackpad.com'}) {
+  constructor(key, secret, host = 'hackpad.com') {
     const consumer = oauth.createConsumer(key, secret);
     this.signer = oauth.createHmac(consumer);
-    this.host = options.host;
+    this.host = host;
   }
   static loadFromEnvironment() {
     const key = process.env.HACKPAD_CLIENT_ID || process.env.HACKPAD_KEY;
